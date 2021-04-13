@@ -1,0 +1,17 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="p.flask_session" />
+          <option value="sqlprac.sqlprac.settings.ATOMIC_REQUESTS" />
+          <option value="proj.app.models.datetime" />
+          <option value="proj.app.admin.groups" />
+          <option value="demo.core.models.reverse" />
+          <option value="demo.dashboard.views.core" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>

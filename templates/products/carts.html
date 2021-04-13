@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+  <head>
+     <meta http-equiv="X-UA-Compatible" content="IE=edge" /> <!-- Optimal Internet Explorer compatibility -->
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.min.css')}}">
+
+    <title>LULU</title>
+
+  </head>
+  <body>
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand text-warning" href="/">
+            <h1>LULU </h1>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="/">Products <span class="sr-only">(current)</span></a>
+            </li>
+
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+                   role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                 Product Categories
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    {% for category in categories %}
+                  <a class="dropdown-item"
+                     href="{{url_for('get_category',id=category.id)}}">
+                      {{category.name}}</a>
+                  {% endfor %}
+                </div>
+              </li>
+          </ul >
+          <ul class="navbar-nav ml-auto">
+
+              {% if current_user.is_authenticated %}
+                 <li class="nav-item">
+                  <a href="{{url_for('customer_logout')}}" class="nav-link">
+                      <strong>
+                      {{current_user.name}}</strong>
+                  </a>
+
+                </li>
+                 <li class="nav-item">
+                <a href="{{url_for('getCart')}}" class="nav-link">
+                    <strong> Cart ({{ session['Shoppingcart']|length }}) </strong></a>
+              </li>
+                 <li class="nav-item">
+                   <a href="{{url_for('customer_logout')}}" class="nav-link"><strong>Logout</strong></a>
+                 </li>
+             {% else %}
+             <li class="nav-item">
+              <a href="{{url_for('customer_register')}}" class="nav-link">Register</a>
+            </li>
+             <li class="nav-item">
+              <a href="{{url_for('customerLogin')}}" class="nav-link">login</a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </nav>
+
+</div>
+<div class="container mt-4">
+    {% include '_messages.html' %}
+    <div class="row">
+        <div class="col-md-12">
+        <table class="table table-sm">
+            <thead>
+                <th>Sr</th>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Color</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Discount</th>
+                <th>Subtotal</th>
+                <th>Update</th>
+                <th>Delete</th>
+            </thead>
+            <tbody>
+                {% for key, product in session['Shoppingcart'].items() %}
+                {% set discount =(product.discount/100) * product.price|float %}
+                <tr>
+                    <td>{{loop.index}}</td>
+                    <td><img src="{{url_for('static',filename='images/'+ product.image)}}" alt="{{product.name}}" width="50" height="45"></td>
+                    <td>{{product.name}}</td>
+                    <form action="{{url_for('updatecart', code=key)}}" method="post">
+                    <td>
+                        {% set colors = product.colors.split(',') %}
+                        <label for="colors">Colors: </label>
+                        <select name="color" id="color">
+                            <option value="{{product.color}}" style="display: none;">{{product.color|capitalize}}</option>
+                            {% for color in colors %}
+                            {% set col = color.split(':') %}
+                            <option value="{{col[0]}}">{{col[0] | capitalize }}</option>
+                            {% endfor %}
+                        </select>
+                    
+                    </td>
+                    <td>${{"%.2f"|format(product.price)}}</td>
+                    <td> <input type="number" name="quantity" min="1" value="{{product.quantity}}"> </td>
+                    {% if product.discount  %}
+                    <td>{{product.discount}} % &nbsp; &nbsp; is {{"%.2f"|format(discount)}}</td>
+                    {% else %}
+                    <td></td>
+                    {% endif %}
+                    {% set subtotal = product.quantity|int * product.price|float  %}
+                    <td>${{"%.2f"|format(subtotal - discount|round(1,'floor')) }}</td>
+                    <td><button type="submit" class="btn btn-sm btn-info">Update</button> </td>
+                </form>
+                    <td> <a href="{{url_for('deleteitem', id=key)}}" class="btn btn-sm btn-danger">Delete</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <table class="table table-sm">
+           <tr>
+
+        <td><div id="paypal-button-container"></div></td>
+                   <!-- Set up a container element for the button -->
+                <td><input hidden value="{{grandtotal}}" id="total"></td>
+
+
+               <td> <h5>Tax: ${{tax}}</h5></td>
+               <td> <h5>Grand total: ${{grandtotal}}</h5> </td>
+                <td> <a href="{{url_for('clearcart')}}" class="btn btn-danger btn-sm float-right mr-4"> Clear cart</a> </td>
+
+           </tr>
+        </table>
+
+    </div>
+          <script src="https://www.paypal.com/sdk/js?client-id=AQVs1-hPNfvJhn_lY4l-ET6EsvaUDRgzpDKqKscooP9GatTh25RR7XY2SFmSCpHT35hpbX00tBB3vDLr&currency=USD"></script>
+
+    <script>
+        // Render the PayPal button into #paypal-button-container
+        var total = document.getElementById("total").value;
+        paypal.Buttons({
+
+            // Set up the transaction
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: total
+                        }
+                    }]
+                });
+            },
+
+            // Finalize the transaction
+            onApprove: function(data, actions) {
+                return actions.order.capture().then(function(details) {
+                    // Show a success message to the buyer
+                     window.location.href = "http://127.0.0.1:5000/getorder";
+                    alert('Transaction completed by ' + details.payer.name.given_name + '!');
+                });
+            }
+
+
+        }).render('#paypal-button-container');
+    </script>
+  </div>
+</div>
+  <script src="{{url_for('static', filename='js/jquery-3.4.1.slim.min.js')}}" ></script>
+    <script src="{{url_for('static', filename='js/popper.min.js')}}"></script>
+    <script src="{{url_for('static', filename='js/bootstrap.min.js')}}"></script>
+  </body>
+</html>

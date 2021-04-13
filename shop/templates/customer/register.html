@@ -1,0 +1,79 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand text-warning" href="/">
+            <h1>LULU </h1>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+          <ul class="navbar-nav ml-auto">
+
+
+              <li class="nav-item">
+                   <a href="/" class="nav-link"><strong>Home</strong></a>
+                 </li>
+              {% if current_user.is_authenticated %}
+                 <li class="nav-item">
+                  <a href="{{url_for('customer_logout')}}" class="nav-link">
+                      <strong>
+                      {{current_user.name}}</strong>
+                  </a>
+                </li>
+                 <li class="nav-item">
+                   <a href="{{url_for('customer_logout')}}" class="nav-link"><strong>Logout</strong></a>
+                 </li>
+             {% else %}
+             <li class="nav-item">
+              <a href="{{url_for('customer_register')}}" class="nav-link">Register</a>
+            </li>
+             <li class="nav-item">
+              <a href="{{url_for('customerLogin')}}" class="nav-link">login</a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </nav>
+
+</div>
+{% from "_formhelpers.html" import render_field %}
+
+
+<div class="container rounded">
+    <br>
+    <div class="row ">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <h1 class="bg-warning text-center py-2 text-white">Register </h1>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+    <form action="" method="post">
+        {{ form.csrf_token }}
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-4">
+                {{ render_field(form.name, class="form-control")}}
+                {{ render_field(form.username,class="form-control")}}
+                {{ render_field(form.email,class="form-control")}}
+                {{ render_field(form.password, class="form-control")}}
+                {{ render_field(form.confirm ,class="form-control")}}
+                {{ form.profile() }}
+            </div>
+            <div class="col-md-4">
+                {{ render_field(form.country,class="form-control")}}
+                {{ render_field(form.city, class="form-control")}}
+                {{ render_field(form.contact, class="form-control")}}
+                {{ render_field(form.address, class="form-control")}}
+                {{ render_field(form.zipcode, class="form-control")}}
+                {{ form.submit(class="btn btn-sm btn-warning float-right") }}
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+    </form>
+</div>
+
+{% endblock content %}

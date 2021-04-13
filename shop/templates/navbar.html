@@ -1,0 +1,61 @@
+ 
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand text-warning" href="/">
+            <h1>LULU </h1>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="/">Products <span class="sr-only">(current)</span></a>
+            </li>
+
+             
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+                   role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                 Product Categories
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    {% for category in categories %}
+                  <a class="dropdown-item"
+                     href="{{url_for('get_category',id=category.id)}}">
+                      {{category.name}}</a>
+                  {% endfor %}
+                </div>
+              </li>
+          </ul >
+          <ul class="navbar-nav ml-auto">
+
+              {% if current_user.is_authenticated %}
+                 <li class="nav-item">
+                  <a href="{{url_for('customer_logout')}}" class="nav-link">
+                      <strong>
+                      {{current_user.name}}</strong>
+                  </a>
+
+                </li>
+                 <li class="nav-item">
+                <a href="{{url_for('getCart')}}" class="nav-link">
+                    <strong> Cart ({{ session['Shoppingcart']|length }}) </strong></a>
+              </li>
+                 <li class="nav-item">
+                   <a href="{{url_for('customer_logout')}}" class="nav-link"><strong>Logout</strong></a>
+                 </li>
+             {% else %}
+             <li class="nav-item">
+              <a href="{{url_for('customer_register')}}" class="nav-link">Register</a>
+            </li>
+             <li class="nav-item">
+              <a href="{{url_for('customerLogin')}}" class="nav-link">login</a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </nav>
+     
+</div>
+<!---============== END OF NAV BAR ==================-->

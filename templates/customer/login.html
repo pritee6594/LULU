@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+  <head>
+     <meta http-equiv="X-UA-Compatible" content="IE=edge" /> <!-- Optimal Internet Explorer compatibility -->
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.min.css')}}">
+
+    <title>LULU</title>
+
+  </head>
+<body>
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand text-warning" href="/">
+            <h1>LULU </h1>
+
+
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+          <ul class="navbar-nav ml-auto">
+
+                <li class="nav-item">
+                   <a href="/" class="nav-link"><strong>Home</strong></a>
+                 </li>
+
+              {% if current_user.is_authenticated %}
+                 <li class="nav-item">
+                  <a href="{{url_for('customer_logout')}}" class="nav-link">
+                      <strong>
+                      {{current_user.name}}</strong>
+                  </a>
+                </li>
+                 <li class="nav-item">
+                   <a href="{{url_for('customer_logout')}}" class="nav-link"><strong>Logout</strong></a>
+                 </li>
+             {% else %}
+             <li class="nav-item">
+              <a href="{{url_for('customer_register')}}" class="nav-link">Register</a>
+            </li>
+             <li class="nav-item">
+              <a href="{{url_for('customerLogin')}}" class="nav-link">login</a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </nav>
+
+</div>
+<div class="container">
+    <div class="row">
+
+        <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <br><br>
+                <div class="text-center bg-warning text-white p-2 h4">Login</div>
+                {% from "_formhelpers.html" import render_field %}
+                {% include '_messages.html' %}
+                <form method=post>
+                    {{form.csrf_token}}
+                <div>
+                    {{ render_field(form.email, class="form-control") }}
+                    {{ render_field(form.password, class="form-control") }}
+                </div>
+                <p>
+                    <div class="col text-center">
+                    <input type="submit" value="Login" class=" btn btn-warning">
+                </div>
+
+                </form>
+            </div>
+      <div class="col-md-3"></div>
+    </div>
+</div>
+    <script src="{{url_for('static', filename='js/jquery-3.4.1.slim.min.js')}}" ></script>
+    <script src="{{url_for('static', filename='js/popper.min.js')}}"></script>
+    <script src="{{url_for('static', filename='js/bootstrap.min.js')}}"></script>
+  </body>
+</html>
