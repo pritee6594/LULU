@@ -1,6 +1,9 @@
-runtime: python39
-api_version: 1
-threadsafe: true
+runtime: python
+vm: true
+entrypoint: gunicorn -b :$PORT run:app
+
+runtime_config:
+  python_version: 3
 
 handlers:
 - url: /static
