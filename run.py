@@ -15,7 +15,7 @@ app = Flask(__name__)
 
 # Databases Connection....
 
-app.config["SQLALCHEMY_DATABASE_URI"] ='mysql://root:@localhost/lulu_database'
+app.config["SQLALCHEMY_DATABASE_URI"] ='sqlite:///User.sqlite3'
 app.config['SECRET_KEY']='eb98fb4d7fab5b2bc8810e819bc6ff6e'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 basedir = os.path.abspath(os.path.dirname(__file__))
