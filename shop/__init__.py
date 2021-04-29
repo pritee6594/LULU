@@ -12,7 +12,7 @@ app = Flask(__name__)
 
 # Databases Connection....
 
-app.config["SQLALCHEMY_DATABASE_URI"] ='mysql://root:@localhost/lulu_database'
+app.config["SQLALCHEMY_DATABASE_URI"] ='postgresql://kvagxribnpevli:bb66161683f5efe70890b73f8130b16e24051276d21854560cbba73f28dc6887@ec2-54-155-35-88.eu-west-1.compute.amazonaws.com:5432/d4cj3acirfjfqv'
 app.config['SECRET_KEY']='lulu/MyEcomSite'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 basedir = os.path.abspath(os.path.dirname(__file__))
