@@ -27,3 +27,4 @@ SQLAlchemy==1.4.7
 urllib3==1.26.4
 Werkzeug==0.16.0
 WTForms==2.2.1
+psycopg2==2.8.6
