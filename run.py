@@ -364,7 +364,7 @@ def thanks():
 def customer_register():
     form = CustomerRegisterForm()
     if form.validate_on_submit():
-        hash_password = bcrypt.generate_password_hash(form.password.data)
+        hash_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
         register = Register(name=form.name.data, username=form.username.data, email=form.email.data,
                             password=hash_password, country=form.country.data, city=form.city.data,
                             contact=form.contact.data, address=form.address.data, zipcode=form.zipcode.data)
