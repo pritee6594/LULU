@@ -13,6 +13,7 @@ import secrets
 
 app = Flask(__name__)
 
+
 # Databases Connection....
 
 app.config["SQLALCHEMY_DATABASE_URI"] ='postgresql://kvagxribnpevli:bb66161683f5efe70890b73f8130b16e24051276d21854560cbba73f28dc6887' \
